@@ -31,11 +31,14 @@ public class FooResourceTest {
                 .resolve("com.example.foo:bean").withoutTransitivity()
                 .asFile();
 
-        return ShrinkWrap.create(WebArchive.class)
+        WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addAsLibraries(libs)
                 .addClasses(RestApp.class, FooResource.class)
                 .addPackage(Application.class.getPackage())
+                .addAsWebInfResource(new File("src/main/webapp/WEB-INF", "weblogic.xml"))
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        System.out.println(war.toString(true));
+        return war;
     }
 
     @Test
